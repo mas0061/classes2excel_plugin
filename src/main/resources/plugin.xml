@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+   <extension point="com.change_vision.astah.ui.actionSets">
+      <actionSet
+            label="%action_set_label"
+            visible="true"
+            id="net.mas0061.astah.plugin.classes2excel.classes2excel.actionSet">
+         <menu
+               id="classes2excel"
+               label="%menu_group"
+               path="tool/classes2excel">
+         </menu>
+         <action
+			   label="%menu_label"
+               icon="icons/sample.gif"
+               class="net.mas0061.astah.plugin.classes2excel.TemplateAction"
+               tooltip="%menu_tooltip"
+               menubarPath="tool/classes2excel/"
+               id="classes2excel">
+         </action>
+     </actionSet>
+   </extension>
+</plugin>
