@@ -8,7 +8,7 @@
          <menu
                id="classes2excel"
                label="%menu_group"
-               path="tool/classes2excel">
+               path="tool/export_rtf">
          </menu>
          <action
 			   label="%menu_label"
