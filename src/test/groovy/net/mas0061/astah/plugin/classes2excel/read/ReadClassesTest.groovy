@@ -45,7 +45,7 @@ class ReadClassesTest extends Specification {
         readClasses.forTest()
 
         when:
-        def expectFileName = "/Users/mas/Desktop/out.csv"
+        def expectFileName = "out.csv"
         readClasses.exportClassAttributeListCSV(expectFileName)
 
         then:
@@ -58,7 +58,7 @@ class ReadClassesTest extends Specification {
         readClasses.forTest()
 
         when:
-        def expectFileName = "/Users/mas/Desktop/out.xlsx"
+        def expectFileName = "out.xlsx"
         readClasses.exportClassAttributeListExcel(expectFileName)
 
         then:
