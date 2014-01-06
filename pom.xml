@@ -324,6 +324,13 @@
             <systemPath>${astahPath}/astah-api.jar</systemPath>
         </dependency>
         <dependency>
+            <groupId>com.change_vision.astah</groupId>
+            <artifactId>astah-pro</artifactId>
+            <version>${astah.version}</version>
+            <scope>system</scope>
+            <systemPath>${astahPath}/astah-pro.jar</systemPath>
+        </dependency>
+        <dependency>
             <groupId>org.osgi</groupId>
             <artifactId>org.osgi.core</artifactId>
             <version>4.2.0</version>
@@ -351,6 +358,16 @@
             <artifactId>spock-core</artifactId>
             <version>0.7-groovy-2.0</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.10-beta2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>3.10-beta2</version>
         </dependency>
     </dependencies>
 </project>

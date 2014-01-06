@@ -9,7 +9,7 @@ import spock.lang.Unroll
 class ElementWithAnnotationTest extends Specification {
 
     @Unroll
-    def "convertComma2Colonで #testName テスト"() {
+    def "convertComma2Slashで #testName テスト"() {
         when:
         def actual = ElementWithAnnotation.convertComma2Slash(元データ)
 
@@ -18,9 +18,9 @@ class ElementWithAnnotationTest extends Specification {
 
         where:
         元データ | 期待値 | testName
-        "aaa,bbb,ccc,あああ,いいい" | "aaa:bbb:ccc:あああ:いいい" | "通常のカンマ区切り"
-        "aaa,bbb,,,ccc,あああ,いいい" | "aaa:bbb:::ccc:あああ:いいい" | "カンマが連続している部分がある"
-        "aaa,bbb,ccc,あああ,いいい," | "aaa:bbb:ccc:あああ:いいい:" | "文字列の最後にカンマがある"
-        ",aaa,bbb,ccc,あああ,いいい" | ":aaa:bbb:ccc:あああ:いいい" | "文字列の最初にカンマがある"
+        "aaa,bbb,ccc,あああ,いいい" | "aaa/bbb/ccc/あああ/いいい" | "通常のカンマ区切り"
+        "aaa,bbb,,,ccc,あああ,いいい" | "aaa/bbb///ccc/あああ/いいい" | "カンマが連続している部分がある"
+        "aaa,bbb,ccc,あああ,いいい," | "aaa/bbb/ccc/あああ/いいい/" | "文字列の最後にカンマがある"
+        ",aaa,bbb,ccc,あああ,いいい" | "/aaa/bbb/ccc/あああ/いいい" | "文字列の最初にカンマがある"
     }
 }

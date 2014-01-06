@@ -165,7 +165,7 @@ class ReadClasses {
 
     def forTest() {
         prjAccsr = AstahAPI.getAstahAPI().getProjectAccessor()
-        prjAccsr.open("Facts.asta")
+        prjAccsr.open("test.asta")
         project = prjAccsr.getProject()
     }
 }
