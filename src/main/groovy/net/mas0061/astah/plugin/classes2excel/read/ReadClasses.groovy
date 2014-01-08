@@ -74,9 +74,9 @@ class ReadClasses {
 
         def elements = getClassesAttributes()
         elements.each {
-            writeRow(sheet.createRow(rowNum), it.toClassCommaString().tokenize(","))
+            writeRow(sheet.createRow(rowNum), it.toClassCommaString().split(",").toList())
             it.attributes.each {
-                writeRow(sheet.createRow(rowNum), it.toAttributeCommaString().tokenize(","))
+                writeRow(sheet.createRow(rowNum), it.toAttributeCommaString().split(",").toList())
             }
         }
 
@@ -165,7 +165,7 @@ class ReadClasses {
 
     def forTest() {
         prjAccsr = AstahAPI.getAstahAPI().getProjectAccessor()
-        prjAccsr.open("test.asta")
+        prjAccsr.open("Facts.asta")
         project = prjAccsr.getProject()
     }
 }
