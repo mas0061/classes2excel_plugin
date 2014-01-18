@@ -16,7 +16,13 @@ class ReadClasses {
     IModel project
 
     ReadClasses() {
-//        getProject()
+        getProject()
+    }
+
+    ReadClasses(FileInputStream fileStream) {
+        prjAccsr = AstahAPI.getAstahAPI().getProjectAccessor()
+        prjAccsr.open( fileStream)
+        project = prjAccsr.getProject()
     }
 
     List<String> getClassAnnotations() {
@@ -42,55 +48,6 @@ class ReadClasses {
                 attributes: getAttributesAnnotations(it)
             )
         }
-    }
-
-    def exportClassAttributeListCSV(String fileName) {
-        def elements = getClassesAttributes()
-        def fileWriter = new File(fileName).newWriter("MS932")
-        def firstLine = "クラス名,属性名,型・継承元,アノテーション"
-
-        fileWriter.writeLine(firstLine)
-        elements.each {
-            fileWriter.writeLine(it.toClassCommaString())
-            it.attributes.each {
-                fileWriter.writeLine(it.toAttributeCommaString())
-            }
-        }
-
-        fileWriter.close()
-    }
-
-
-    def rowNum = 0
-
-    def exportClassAttributeListExcel(String fileName) {
-        def book = new XSSFWorkbook()
-        // TODO Windowsで文字化けしたら有効にしてみる
-//        book.createFont().setFontName("ＭＳ Ｐゴシック")
-        def sheet = book.createSheet()
-        rowNum = 0
-
-        writeRow(sheet.createRow(rowNum), ["クラス名", "属性名", "型・継承元", "アノテーション"])
-
-        def elements = getClassesAttributes()
-        elements.each {
-            writeRow(sheet.createRow(rowNum), it.toClassCommaString().split(",").toList())
-            it.attributes.each {
-                writeRow(sheet.createRow(rowNum), it.toAttributeCommaString().split(",").toList())
-            }
-        }
-
-        new File(fileName).withOutputStream { book.write(it) }
-    }
-
-    def writeRow(XSSFRow row, List<String> line) {
-        def cellNum = 0
-
-        line.each {
-            row.createCell(cellNum).setCellValue(it)
-            cellNum++
-        }
-        rowNum++
     }
 
     private List<ElementWithAnnotation> getAttributesAnnotations(IClass iClass) {
@@ -163,9 +120,4 @@ class ReadClasses {
         element.getStereotypes()
     }
 
-    def forTest() {
-        prjAccsr = AstahAPI.getAstahAPI().getProjectAccessor()
-        prjAccsr.open("Facts.asta")
-        project = prjAccsr.getProject()
-    }
 }

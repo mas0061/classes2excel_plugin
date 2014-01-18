@@ -6,10 +6,10 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/groovy" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -17,7 +17,7 @@
     <orderEntry type="module-library">
       <library name="Maven: com.change_vision.astah:astah-api:6.7">
         <CLASSES>
-          <root url="jar://C:/Program Files/astah-professional/astah-api.jar!/" />
+          <root url="jar:///Applications/astah professional/astah professional.app/Contents/Java/astah-api.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -26,7 +26,7 @@
     <orderEntry type="module-library">
       <library name="Maven: com.change_vision.astah:astah-pro:6.7">
         <CLASSES>
-          <root url="jar://C:/Program Files/astah-professional/astah-pro.jar!/" />
+          <root url="jar:///Applications/astah professional/astah professional.app/Contents/Java/astah-pro.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
