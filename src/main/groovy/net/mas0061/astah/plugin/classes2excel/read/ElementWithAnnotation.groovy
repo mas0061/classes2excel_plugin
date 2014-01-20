@@ -5,17 +5,19 @@ package net.mas0061.astah.plugin.classes2excel.read
  */
 class ElementWithAnnotation {
     String name
+    String parent
     String annotation
     String type
+    String etc
 
     List<ElementWithAnnotation> attributes
 
     def toClassCommaString() {
-        name + ",," + type + "," + convertComma2Slash(annotation)
+        name + ",," + type + "," + convertComma2Slash(annotation) + "," + etc
     }
 
     def toAttributeCommaString() {
-        "," + name + "," + type + "," + convertComma2Slash(annotation)
+        "," + name + "," + type + "," + convertComma2Slash(annotation) + "," + etc
     }
 
     def static convertComma2Slash(String commaStr) {

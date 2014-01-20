@@ -25,6 +25,10 @@ class ReadClasses {
         project = prjAccsr.getProject()
     }
 
+    def close() {
+        prjAccsr.close()
+    }
+
     List<String> getClassAnnotations() {
         if (!isJavaProject()) throw new RuntimeException("This project is not Java project.")
 
@@ -41,13 +45,37 @@ class ReadClasses {
         List<IClass> classes = []
         getClasses(project, classes)
         classes.findAll { isNotEnumOrInterface(it) }.collect {
+            def annotation = getAnnotation(it)
             new ElementWithAnnotation(
                 name: it.getName(),
-                annotation: getAnnotation(it),
-                type: it.getGeneralizations().collect {it.getSuperType().getName()}.join(":"),
-                attributes: getAttributesAnnotations(it)
+                annotation: formatAnnotation(annotation),
+                parent: it.getGeneralizations().collect {it.getSuperType().getName()}.join(":"),
+                attributes: getAttributesAnnotations(it),
+                etc: getEtc(annotation)
             )
         }
+    }
+
+    List<ElementWithAnnotation> getClassStructure() {
+        if (!isJavaProject()) throw new RuntimeException("This project is not Java project.")
+
+        List<IClass> classes = []
+        getClasses(project, classes)
+        def attrClasses = classes.findAll { isNotEnumOrInterface(it) }.collect {
+            def annotation = getAnnotation(it)
+            def attributes = getChildAttributes(it)
+            if (attributes.size() > 0) {
+                new ElementWithAnnotation(
+                        name: it.getName(),
+                        annotation: formatAnnotation(annotation),
+                        parent: it.getGeneralizations().collect {it.getSuperType().getName()}.join(":"),
+                        attributes: attributes,
+                        etc: getEtc(annotation)
+                )
+            }
+        }
+
+        return attrClasses.findAll {it != null }
     }
 
     private List<ElementWithAnnotation> getAttributesAnnotations(IClass iClass) {
@@ -56,12 +84,28 @@ class ReadClasses {
         def attributes = iClass.getAttributes()
         attributes.findAll{it.getName() != "serialVersionUID"}
             .collect {
+                def annotation = getAnnotation(it)
                 new ElementWithAnnotation(
+                    name: it.getName(),
+                    annotation: formatAnnotation(annotation),
+                    type: it.getType().getName(),
+                    etc: getEtc(annotation)
+                )
+            }
+    }
+
+    private List<ElementWithAnnotation> getChildAttributes(IClass iClass) {
+        if (iClass == null) return []
+
+        def attributes = iClass.getAttributes()
+        attributes.findAll{it.getName() != "serialVersionUID" && getAnnotation(it).contains("Child")}
+                .collect {
+            new ElementWithAnnotation(
                     name: it.getName(),
                     annotation: getAnnotation(it),
                     type: it.getType().getName()
-                )
-            }
+            )
+        }
     }
 
     private String getAnnotation(IElement element) {
@@ -69,6 +113,20 @@ class ReadClasses {
         def tags = element.getTaggedValues()
         def key = tags.find { it.getKey() != null && "jude.java.annotations".equals(it.getKey()) }
         key == null ? "" : key.getValue()
+    }
+
+    private String formatAnnotation(String annotation) {
+        annotation.replaceAll(/(@(.*?)\(".*?"\))/, /$2/).replaceAll(/@/, "")
+   }
+
+    private static String getEtc(String element) {
+        def ret = "";
+        element.split(",").each {
+            ret += it.find(/@.*\("(.*)"\)/) {str, m -> m}
+            ret += ","
+        }
+
+        ret
     }
 
     List<String> getClassesName() {

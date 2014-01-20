@@ -20,7 +20,10 @@ class ReadClassesTest extends Specification {
         def classesName = readClasses.getClassAnnotations()
 
         then:
-        classesName.size() == 50
+        classesName.size() == 54
+
+        cleanup:
+        readClasses.close()
     }
 
     def "クラスと属性とアノテーションを取得するテスト"() {
@@ -30,19 +33,22 @@ class ReadClassesTest extends Specification {
         when:
         def classInfo = readClasses.getClassesAttributes()
         classInfo.each {
-            println "【Class】 " + it.name + " : " + it.type + ", " + it.annotation
+            println "【Class】 " + it.name + " : " + it.type + ", " + it.annotation + ", " + it.etc
             it.attributes.each {
-                println "  `- " + it.name + " : " + it.type + ", " + it.annotation
+                println "  `- " + it.name + " : " + it.type + ", " + it.annotation + ", " + it.etc
             }
         }
 
         then:
-        classInfo.size() == 42
+        classInfo.size() == 46
+
+        cleanup:
+        readClasses.close()
     }
 
     def "クラスと属性とアノテーションがCSV出力されている"() {
         setup:
-        def expectFileName = "out.csv"
+        def expectFileName = System.getProperty("user.home") + "/Desktop/out.csv"
         deleteExistsFile(expectFileName)
         def readClasses = new ReadClasses(testFile)
 
@@ -52,11 +58,14 @@ class ReadClassesTest extends Specification {
 
         then:
         Files.exists(Paths.get(expectFileName))
+
+        cleanup:
+        readClasses.close()
     }
 
     def "クラスと属性とアノテーションがExcel2007形式で出力されている"() {
         setup:
-        def expectFileName = "out.xlsx"
+        def expectFileName = System.getProperty("user.home") + "/Desktop/out.xlsx"
         deleteExistsFile(expectFileName)
         def readClasses = new ReadClasses(testFile)
 
@@ -66,6 +75,43 @@ class ReadClassesTest extends Specification {
 
         then:
         Files.exists(Paths.get(expectFileName))
+
+        cleanup:
+        readClasses.close()
+    }
+
+    def "クラス一覧がExcelで出力されている"() {
+        setup:
+        def expectFileName = System.getProperty("user.home") + "/Desktop/out.xlsx"
+        deleteExistsFile(expectFileName)
+        def readClasses = new ReadClasses(testFile)
+
+        when:
+        def classInfo = readClasses.getClassStructure()
+        new FileExporter().exportClassChildListExcel(classInfo, expectFileName)
+
+        then:
+        Files.exists(Paths.get(expectFileName))
+
+        cleanup:
+        readClasses.close()
+    }
+
+    def "クラス詳細がExcelで出力されている"() {
+        setup:
+        def expectFileName = System.getProperty("user.home") + "/Desktop/out.xlsx"
+        deleteExistsFile(expectFileName)
+        def readClasses = new ReadClasses(testFile)
+
+        when:
+        def classInfo = readClasses.getClassesAttributes()
+        new FileExporter().exportClassDefinitionListExcel(classInfo, expectFileName)
+
+        then:
+        Files.exists(Paths.get(expectFileName))
+
+        cleanup:
+        readClasses.close()
     }
 
     def deleteExistsFile(String fileName) {

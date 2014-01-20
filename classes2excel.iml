@@ -17,7 +17,7 @@
     <orderEntry type="module-library">
       <library name="Maven: com.change_vision.astah:astah-api:6.7">
         <CLASSES>
-          <root url="jar:///Applications/astah professional/astah professional.app/Contents/Java/astah-api.jar!/" />
+          <root url="jar://C:/Program Files/astah-professional/astah-api.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -26,7 +26,7 @@
     <orderEntry type="module-library">
       <library name="Maven: com.change_vision.astah:astah-pro:6.7">
         <CLASSES>
-          <root url="jar:///Applications/astah professional/astah professional.app/Contents/Java/astah-pro.jar!/" />
+          <root url="jar://C:/Program Files/astah-professional/astah-pro.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
