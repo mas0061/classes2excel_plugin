@@ -25,63 +25,59 @@ class FileExporter {
     }
 
     def exportClassAttributeListExcel(List<ElementWithAnnotation> elements, String fileName) {
-        def book = new XSSFWorkbook()
-        // TODO Windowsで文字化けしたら有効にしてみる → 大丈夫だったので不要
-//        book.createFont().setFontName("ＭＳ Ｐゴシック")
-        def sheet = book.createSheet()
-        rowNum = 0
-
-        writeRow(sheet.createRow(rowNum), ["クラス名", "属性名", "型・継承元", "アノテーション", "備考"])
+        def dataList = []
+        dataList.add(["クラス名", "属性名", "型・継承元", "アノテーション", "備考"])
 
         elements.each {
-            writeRow(sheet.createRow(rowNum), it.toClassCommaString().split(",").toList())
+            dataList.add(it.toClassCommaString().split(",").toList())
             it.attributes.each {
-                writeRow(sheet.createRow(rowNum), it.toAttributeCommaString().split(",").toList())
+                dataList.add(it.toAttributeCommaString().split(",").toList())
             }
         }
 
-        new File(fileName).withOutputStream { book.write(it) }
+        writeRowList(fileName, "クラス・属性一覧", dataList)
     }
 
     def exportClassChildListExcel(List<ElementWithAnnotation> elements, String fileName) {
-        def book = new XSSFWorkbook()
-        // TODO Windowsで文字化けしたら有効にしてみる → 大丈夫だったので不要
-//        book.createFont().setFontName("ＭＳ Ｐゴシック")
-        def sheet = book.createSheet("Fact構造一覧")
-        rowNum = 0
-
-        writeRow(sheet.createRow(rowNum), ["クラス名", "子クラス名", "備考"])
+        def dataList = []
+        dataList.add(["クラス名", "子クラス名", "備考"])
 
         elements.each {
-            writeRow(sheet.createRow(rowNum), [it.name, "", it.etc])
+            dataList.add([it.name, "", it.etc])
             it.attributes.each {
-                writeRow(sheet.createRow(rowNum), ["", it.name, it.etc])
+                dataList.add(["", it.name, it.etc])
             }
             // 空行出力
-            writeRow(sheet.createRow(rowNum), [])
+            dataList.add([])
         }
 
-        new File(fileName).withOutputStream { book.write(it) }
+        writeRowList(fileName, "Fact一覧", dataList)
     }
 
     def exportClassDefinitionListExcel(List<ElementWithAnnotation> elements, String fileName) {
-        def book = new XSSFWorkbook()
-        // TODO Windowsで文字化けしたら有効にしてみる → 大丈夫だったので不要
-//        book.createFont().setFontName("ＭＳ Ｐゴシック")
-        def sheet = book.createSheet("Fact詳細")
-        rowNum = 0
-        def titleHeader = ["項目名", "属性", "I/O", "備考"]
+        def dataList = []
 
         elements.each {
-            writeRow(sheet.createRow(rowNum), [it.name])
-            writeRow(sheet.createRow(rowNum), titleHeader)
+            dataList.add([it.name])
+            dataList.add(["項目名", "属性", "I/O", "備考"])
             it.attributes.each {
-                writeRow(sheet.createRow(rowNum), [it.name, it.type, it.annotation, it.etc])
+                dataList.add([it.name, it.type, it.annotation, it.etc])
             }
             // 空行出力
-            writeRow(sheet.createRow(rowNum), [])
+            dataList.add([])
         }
 
+        writeRowList(fileName, "Fact詳細", dataList)
+    }
+
+    def writeRowList(String fileName, String sheetName, List<List<String>> lines) {
+        def book = new XSSFWorkbook()
+        def sheet = book.createSheet(sheetName)
+        def rowNum = 0
+        lines.each {
+            writeRow(sheet.createRow(rowNum), it)
+            rowNum++
+        }
         new File(fileName).withOutputStream { book.write(it) }
     }
 
