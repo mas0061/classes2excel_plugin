@@ -1,4 +1,4 @@
 classes2excel_plugin
 ====================
 
-ashtaのクラス構造からExcelドキュメントを出力するastahプラグイン
+astahのクラス構造からExcelドキュメントを出力するastahプラグイン

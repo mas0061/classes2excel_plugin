@@ -9,7 +9,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook
 class FileExporter {
     def rowNum = 0
 
-    def exportClassAttributeListCSV(List<ElementWithAnnotation> elements, String fileName) {
+    public def exportClassAttributeListCSV(List<ElementWithAnnotation> elements, String fileName) {
         def fileWriter = new File(fileName).newWriter("MS932")
         def firstLine = "クラス名,属性名,型・継承元,アノテーション,備考"
 
@@ -24,7 +24,7 @@ class FileExporter {
         fileWriter.close()
     }
 
-    def exportClassAttributeListExcel(List<ElementWithAnnotation> elements, String fileName) {
+    public def exportClassAttributeListExcel(List<ElementWithAnnotation> elements, String fileName) {
         def dataList = []
         dataList.add(["クラス名", "属性名", "型・継承元", "アノテーション", "備考"])
 
@@ -38,7 +38,7 @@ class FileExporter {
         writeRowList(fileName, "クラス・属性一覧", dataList)
     }
 
-    def exportClassChildListExcel(List<ElementWithAnnotation> elements, String fileName) {
+    public def exportClassChildListExcel(List<ElementWithAnnotation> elements, String fileName) {
         def dataList = []
 
         elements.each {
@@ -54,7 +54,7 @@ class FileExporter {
         writeRowList(fileName, "クラス一覧", dataList)
     }
 
-    def exportClassDefinitionListExcel(List<ElementWithAnnotation> elements, String fileName) {
+    public def exportClassDefinitionListExcel(List<ElementWithAnnotation> elements, String fileName) {
         def dataList = []
 
         elements.each {
