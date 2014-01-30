@@ -19,9 +19,15 @@ class ReadClasses {
         getProject()
     }
 
+    ReadClasses(ProjectAccessor accsr, IModel prj) {
+        prjAccsr = accsr
+        project = prj
+
+    }
+
     ReadClasses(FileInputStream fileStream) {
         prjAccsr = AstahAPI.getAstahAPI().getProjectAccessor()
-        prjAccsr.open( fileStream)
+        prjAccsr.open(fileStream)
         project = prjAccsr.getProject()
     }
 
