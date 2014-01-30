@@ -122,11 +122,11 @@ class ReadClasses {
     private static String getEtc(String element) {
         def ret = "";
         element.split(",").each {
-            ret += it.find(/@.*\("(.*)"\)/) {str, m -> m}
-            ret += ","
+            def extract = it.find(/@.*\("(.*)"\)/) {str, m -> m}
+            if (extract != null && extract != "null") ret += extract + ","
         }
 
-        ret
+        ret.replaceFirst(/,$/, "")
     }
 
     List<String> getClassesName() {
