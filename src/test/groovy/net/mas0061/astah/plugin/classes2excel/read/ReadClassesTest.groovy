@@ -114,6 +114,24 @@ class ReadClassesTest extends Specification {
         readClasses.close()
     }
 
+    def "クラス一覧と詳細が1つのExcelファイルに出力されている"() {
+        setup:
+        def expectFileName = System.getProperty("user.home") + "/Desktop/outAll.xlsx"
+        deleteExistsFile(expectFileName)
+        def readClasses = new ReadClasses(testFile)
+
+        when:
+        def classInfo = readClasses.getClassStructure()
+        def attrInfo = readClasses.getClassesAttributes()
+        new FileExporter().exportAllListExcel(classInfo, attrInfo, expectFileName)
+
+        then:
+        Files.exists(Paths.get(expectFileName))
+
+        cleanup:
+        readClasses.close()
+    }
+
     def deleteExistsFile(String fileName) {
         Path path = Paths.get(fileName)
         if (Files.exists(path)) {

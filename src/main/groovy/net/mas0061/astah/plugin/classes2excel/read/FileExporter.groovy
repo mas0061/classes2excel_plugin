@@ -35,10 +35,29 @@ class FileExporter {
             }
         }
 
-        writeRowList(fileName, "クラス・属性一覧", dataList)
+        def book = writeRowList(new XSSFWorkbook(), "クラス・属性一覧", dataList)
+        writeFile(book, fileName)
+    }
+
+    public def exportAllListExcel(List<ElementWithAnnotation> classElements, List<ElementWithAnnotation> attrElements, String fileName) {
+        def book = writeRowList(new XSSFWorkbook(), "クラス一覧", createClassList(classElements))
+        book = writeRowList(book, "クラス詳細", createDefinitionList(attrElements))
+        writeFile(book, fileName)
     }
 
     public def exportClassChildListExcel(List<ElementWithAnnotation> elements, String fileName) {
+        def writeDataList = createClassList(elements)
+        def book = writeRowList(new XSSFWorkbook(), "クラス一覧", writeDataList)
+        writeFile(book, fileName)
+    }
+
+    public def exportClassDefinitionListExcel(List<ElementWithAnnotation> elements, String fileName) {
+        def writeDataList = createDefinitionList(elements)
+        def book = writeRowList(new XSSFWorkbook(), "クラス詳細", writeDataList)
+        writeFile(book, fileName)
+    }
+
+    def createClassList(List<ElementWithAnnotation> elements) {
         def dataList = []
 
         elements.each {
@@ -51,10 +70,10 @@ class FileExporter {
             dataList.add([])
         }
 
-        writeRowList(fileName, "クラス一覧", dataList)
+        dataList
     }
 
-    public def exportClassDefinitionListExcel(List<ElementWithAnnotation> elements, String fileName) {
+    def createDefinitionList(List<ElementWithAnnotation> elements) {
         def dataList = []
 
         elements.each {
@@ -67,18 +86,21 @@ class FileExporter {
             dataList.add([])
         }
 
-        writeRowList(fileName, "クラス詳細", dataList)
+        dataList
     }
 
-    def writeRowList(String fileName, String sheetName, List<List<String>> lines) {
-        def book = new XSSFWorkbook()
+    def writeFile(XSSFWorkbook book, String fileName) {
+        new File(fileName).withOutputStream { book.write(it) }
+    }
+
+    def writeRowList(XSSFWorkbook book, String sheetName, List<List<String>> lines) {
         def sheet = book.createSheet(sheetName)
         def rowNum = 0
         lines.each {
             writeRow(sheet.createRow(rowNum), it)
             rowNum++
         }
-        new File(fileName).withOutputStream { book.write(it) }
+        book
     }
 
     def writeRow(XSSFRow row, List<String> line) {
