@@ -36,25 +36,37 @@ class FileExporter {
         }
 
         def book = writeRowList(new XSSFWorkbook(), "クラス・属性一覧", dataList)
-        writeFile(book, fileName)
+        writeFile(book, new File(fileName))
     }
 
     public def exportAllListExcel(List<ElementWithAnnotation> classElements, List<ElementWithAnnotation> attrElements, String fileName) {
+        exportAllListExcel(classElements, attrElements, new File(fileName))
+    }
+
+    public def exportAllListExcel(List<ElementWithAnnotation> classElements, List<ElementWithAnnotation> attrElements, File file) {
         def book = writeRowList(new XSSFWorkbook(), "クラス一覧", createClassList(classElements))
         book = writeRowList(book, "クラス詳細", createDefinitionList(attrElements))
-        writeFile(book, fileName)
+        writeFile(book, file)
     }
 
     public def exportClassChildListExcel(List<ElementWithAnnotation> elements, String fileName) {
+        exportClassChildListExcel(elements, new File(fileName))
+    }
+
+    public def exportClassChildListExcel(List<ElementWithAnnotation> elements, File file) {
         def writeDataList = createClassList(elements)
         def book = writeRowList(new XSSFWorkbook(), "クラス一覧", writeDataList)
-        writeFile(book, fileName)
+        writeFile(book, file)
     }
 
     public def exportClassDefinitionListExcel(List<ElementWithAnnotation> elements, String fileName) {
+        exportClassDefinitionListExcel(elements, new File(fileName))
+    }
+
+    public def exportClassDefinitionListExcel(List<ElementWithAnnotation> elements, File file) {
         def writeDataList = createDefinitionList(elements)
         def book = writeRowList(new XSSFWorkbook(), "クラス詳細", writeDataList)
-        writeFile(book, fileName)
+        writeFile(book, file)
     }
 
     def createClassList(List<ElementWithAnnotation> elements) {
@@ -78,7 +90,7 @@ class FileExporter {
 
         elements.each {
             dataList.add([it.name])
-            dataList.add(["項目名", "属性", "I/O", "備考"])
+            dataList.add(["属性名", "属性", "注釈", "備考"])
             it.attributes.each {
                 dataList.add([it.name, it.type, it.annotation, it.etc])
             }
@@ -89,8 +101,8 @@ class FileExporter {
         dataList
     }
 
-    def writeFile(XSSFWorkbook book, String fileName) {
-        new File(fileName).withOutputStream { book.write(it) }
+    def writeFile(XSSFWorkbook book, File file) {
+        file.withOutputStream { book.write(it) }
     }
 
     def writeRowList(XSSFWorkbook book, String sheetName, List<List<String>> lines) {
