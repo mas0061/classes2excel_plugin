@@ -64,7 +64,7 @@ class ReadClasses {
         def attrClasses = classes.findAll { isNotEnumOrInterface(it) }.collect {
             def annotation = getAnnotation(it)
             def attributes = getChildAttributes(it)
-            if (attributes.size() > 0) {
+//            if (attributes.size() > 0) {
                 new ElementWithAnnotation(
                         name: it.getName(),
                         annotation: formatAnnotation(annotation),
@@ -72,7 +72,7 @@ class ReadClasses {
                         attributes: attributes,
                         etc: getEtc(annotation)
                 )
-            }
+//            }
         }
 
         return attrClasses.findAll {it != null }

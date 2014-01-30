@@ -42,10 +42,10 @@ class FileExporter {
         def dataList = []
 
         elements.each {
-            dataList.add(["クラス名", "子クラス名", "備考"])
-            dataList.add([it.name, "", it.etc])
+            dataList.add(["クラス名", "継承元", "属性クラス名", "備考"])
+            dataList.add([it.name, it.parent, "", it.etc])
             it.attributes.each {
-                dataList.add(["", it.name, it.etc])
+                dataList.add(["", "", it.name, it.etc])
             }
             // 空行出力
             dataList.add([])
