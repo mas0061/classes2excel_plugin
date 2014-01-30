@@ -40,9 +40,9 @@ class FileExporter {
 
     def exportClassChildListExcel(List<ElementWithAnnotation> elements, String fileName) {
         def dataList = []
-        dataList.add(["クラス名", "子クラス名", "備考"])
 
         elements.each {
+            dataList.add(["クラス名", "子クラス名", "備考"])
             dataList.add([it.name, "", it.etc])
             it.attributes.each {
                 dataList.add(["", it.name, it.etc])
@@ -51,7 +51,7 @@ class FileExporter {
             dataList.add([])
         }
 
-        writeRowList(fileName, "Fact一覧", dataList)
+        writeRowList(fileName, "クラス一覧", dataList)
     }
 
     def exportClassDefinitionListExcel(List<ElementWithAnnotation> elements, String fileName) {
@@ -67,7 +67,7 @@ class FileExporter {
             dataList.add([])
         }
 
-        writeRowList(fileName, "Fact詳細", dataList)
+        writeRowList(fileName, "クラス詳細", dataList)
     }
 
     def writeRowList(String fileName, String sheetName, List<List<String>> lines) {
