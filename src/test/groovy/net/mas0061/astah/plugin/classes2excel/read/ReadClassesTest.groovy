@@ -40,7 +40,7 @@ class ReadClassesTest extends Specification {
         }
 
         then:
-        classInfo.size() == 46
+        classInfo.size() == 42
 
         cleanup:
         readClasses.close()

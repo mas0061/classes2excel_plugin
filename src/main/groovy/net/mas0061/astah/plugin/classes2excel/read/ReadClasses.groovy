@@ -2,6 +2,7 @@ package net.mas0061.astah.plugin.classes2excel.read
 
 import com.change_vision.jude.api.inf.AstahAPI
 import com.change_vision.jude.api.inf.exception.ProjectNotFoundException
+import com.change_vision.jude.api.inf.model.IAttribute
 import com.change_vision.jude.api.inf.model.IClass
 import com.change_vision.jude.api.inf.model.IElement
 import com.change_vision.jude.api.inf.model.IModel
@@ -94,7 +95,7 @@ class ReadClasses {
                 new ElementWithAnnotation(
                     name: it.getName(),
                     annotation: formatAnnotation(annotation),
-                    type: it.getType().getName(),
+                    type: getTypeString(it),
                     etc: getEtc(annotation)
                 )
             }
@@ -109,9 +110,14 @@ class ReadClasses {
             new ElementWithAnnotation(
                     name: it.getName(),
                     annotation: getAnnotation(it),
-                    type: it.getType().getName()
+                    type: getTypeString(it)
             )
         }
+    }
+
+    private String getTypeString(IAttribute attr) {
+//        println attr.getType().getName() + ", " + attr.getTypeExpression()
+        attr.getTypeExpression()
     }
 
     private String getAnnotation(IElement element) {
@@ -135,7 +141,7 @@ class ReadClasses {
         ret.replaceFirst(/,$/, "")
     }
 
-    List<String> getClassesName() {
+    private List<String> getClassesName() {
         List<IClass> classes = []
         getClasses(project, classes)
         classes.collect {it.getName()}
@@ -159,7 +165,7 @@ class ReadClasses {
         }
     }
 
-    boolean isJavaProject() {
+    private boolean isJavaProject() {
         if (project == null) getProject()
 
         project.getTaggedValues().any {
