@@ -4,3 +4,9 @@ jdk:
 notifications:
   on_success: never
   on_failure: never
+script:
+  - wget http://astah.change-vision.com/files/plugin/astah-plugin-sdk-latest.zip
+  - unzip astah-plugin-sdk-latest.zip
+  - export ASDK_HOME=`pwd`/astah-plugin-SDK-1.1
+  - export PATH=$PATH:$ASDK_HOME/bin
+  - astah-build
