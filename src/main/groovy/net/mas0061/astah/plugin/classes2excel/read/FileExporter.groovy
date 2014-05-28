@@ -89,7 +89,7 @@ class FileExporter {
         def dataList = []
 
         elements.each {
-            dataList.add([it.name])
+            dataList.add([it.name, "親クラス ： ${it.parent}"])
             dataList.add(["属性名", "属性", "注釈", "備考"])
             it.attributes.each {
                 dataList.add([it.name, it.type, it.annotation, it.etc])
